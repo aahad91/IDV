@@ -42,7 +42,7 @@ clb.set_label('Flow Velocity', rotation=90)
 
 # Plot labeling
 plt.title('Vector Field Visualization')
-plt.xlabel('X Equilavent of Vectors')
-plt.ylabel('Y Equilavent of Vectors')
+plt.xlabel('X Equivalent of Vectors')
+plt.ylabel('Y Equivalent of Vectors')
 plt.savefig('vector_field.jpeg', dpi=200)
 plt.show()

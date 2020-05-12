@@ -12,28 +12,32 @@ graph to link occurrences along the x-axis).
 
 Name: Abdul Ahad Ayaz
 """
-# packages
+# ---packages--- #
 import numpy as np
 import math
 import matplotlib.pyplot as plt
+import struct
+# ---Task Functions--- #
+# def profile_line():
 
-def profile_line():
+# def mean1():
 
-def mean1():
+# def variance1():
 
-def variance1():
+# def calc_histogram():
 
-def calc_histogram():
+# def linear_transform():
 
-def linear_transform():
+# def nonlinear_transform():
 
-def nonlinear_transform():
+# def boxcar_filter():
 
-def boxcar_filter():
+# def median_filter():
 
-def median_filter():
+# def visual():
 
-def visual():
-    
-#----------------------------------#
+# ----------------------------------#
 if __name__ == "__main__":
+    with open('slice150.raw', 'rb') as raw:
+        r_data = raw.read(2)        # reading 2bytes of data 
+        print(r_data)

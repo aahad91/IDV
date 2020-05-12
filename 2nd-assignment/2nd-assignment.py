@@ -12,3 +12,28 @@ graph to link occurrences along the x-axis).
 
 Name: Abdul Ahad Ayaz
 """
+# packages
+import numpy as np
+import math
+import matplotlib.pyplot as plt
+
+def profile_line():
+
+def mean1():
+
+def variance1():
+
+def calc_histogram():
+
+def linear_transform():
+
+def nonlinear_transform():
+
+def boxcar_filter():
+
+def median_filter():
+
+def visual():
+    
+#----------------------------------#
+if __name__ == "__main__":

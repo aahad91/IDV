@@ -16,16 +16,33 @@ Name: Abdul Ahad Ayaz
 import numpy as np
 import math
 import matplotlib.pyplot as plt
-import struct
+
 # ---Task Functions--- #
-# def profile_line():
 
-# def mean1():
 
-# def variance1():
+def profile_line(data_2d):
+    prof_line = []
+    for i in range(0, 512):
+        prof_line.append(data_2d[i, 255])
+    plt.plot(prof_line)
+    plt.title('256 Profile Line')
+    plt.show()
 
-# def calc_histogram():
 
+def mean1(data):
+    mean = sum(data)/len(data)
+    print(mean)
+
+
+def variance1(data):
+    # var = sum([(x - mean1(data))**2 for x in data]) / (len(data) - 1)
+    var = np.var(data)
+    print(var)
+
+
+def calc_histogram(data_2d):
+    plt.hist(data_2d, )
+    #plt.show()
 # def linear_transform():
 
 # def nonlinear_transform():
@@ -37,7 +54,12 @@ import struct
 # def visual():
 
 # ----------------------------------#
+
+
 if __name__ == "__main__":
-    with open('slice150.raw', 'rb') as raw:
-        r_data = raw.read(2)        # reading 2bytes of data 
-        print(r_data)
+    raw = np.fromfile('slice150.raw', dtype='int16')
+    mean1(raw)
+    variance1(raw)
+    array2d = raw.reshape(512, 512)
+    profile_line(array2d)
+    calc_histogram(array2d)

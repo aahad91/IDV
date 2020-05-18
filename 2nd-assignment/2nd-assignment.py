@@ -20,13 +20,14 @@ import matplotlib.pyplot as plt
 # ---Task Functions--- #
 
 
-def profile_line(data_2d):
+def profile_line(data):
+    array2d = data.reshape(512, 512)
     prof_line = []
     for i in range(0, 512):
-        prof_line.append(data_2d[i, 255])
+        prof_line.append(array2d[i, 255])
     plt.plot(prof_line)
     plt.title('256 Profile Line')
-    plt.show()
+    #plt.show()
 
 
 def mean1(data):
@@ -40,12 +41,44 @@ def variance1(data):
     print(var)
 
 
-def calc_histogram(data_2d):
-    plt.hist(data_2d, )
+#def calc_histogram(data_2d):
+    #plt.hist(data_2d, )
     #plt.show()
-# def linear_transform():
 
-# def nonlinear_transform():
+def linear_transform(data):
+    i_max = 0
+    i_min = 0
+    linear_tf =[None]*len(data)
+    pixel = np.zeros((512, 512))
+    for i in range(0, len(data)):
+        l = data[i]
+        if i_max is None or i_max < l:
+            i_max = l
+        if i_min is None or i_min > l:
+            i_min = l
+    print(i_max)
+    print(i_min)
+    for j in range(0, len(data)):
+        for x in range(0, 512):
+            for y in range(0, 512):
+                px = data[j]
+                linear_tf[j] = ((px - i_min) / (i_max - i_min))*255
+                #linear_tf.append(linear_tf[j])
+                pixel[x, y] = linear_tf[j]
+    #print(linear_tf)
+    #return linear_tf
+
+def nonlinear_transform(data):
+    nlinear_tf =[None]*len(data)
+    pixel = np.zeros((512, 512))
+    for j in range(0, 512):
+        for x in range(0, 512):
+            for y in range(0, 512):
+                px = data[j]
+                nlinear_tf[j] = math.log2(px + 1)
+                #linear_tf.append(linear_tf[j])
+                pixel[x, y] = nlinear_tf[j]
+    print(pixel)
 
 # def boxcar_filter():
 
@@ -60,6 +93,9 @@ if __name__ == "__main__":
     raw = np.fromfile('slice150.raw', dtype='int16')
     mean1(raw)
     variance1(raw)
-    array2d = raw.reshape(512, 512)
-    profile_line(array2d)
-    calc_histogram(array2d)
+    profile_line(raw)
+    #calc_histogram(array2d)
+    #linear_transform(raw)
+    #print(len(raw))
+    #print(array2d)
+    nonlinear_transform(raw)

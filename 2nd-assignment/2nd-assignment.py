@@ -31,13 +31,13 @@ def profile_line(data):
 # Task B
 def mean1(data):
     mean = sum(data)/len(data)
-    print(mean)
+    print("Mean:", mean)
 
 
 # Task B
 def variance1(data):
     var = np.var(data)
-    print(var)
+    print("Variance:", var)
 
 
 # Task C
@@ -66,12 +66,9 @@ def linear_transform(data):
 # Task E
 def nonlinear_transform(data):
     nlinear_tf = [None]*len(data)
-    log_min = math.log(min) if min > 0 else 0
-    log_max = math.log(max) if max > 0 else 0
     for y in range(0, len(data)):
         px = data[y]
         nlinear_tf[y] = math.log2(px + 1)
-        nlinear_tf[y] = ((math.log2 - log_min)/(log_max - log_min))*255
     nlinear_tf = np.asarray(nlinear_tf)
     pixel = nlinear_tf.reshape(512, 512)
     return pixel
@@ -125,7 +122,7 @@ def visual(data):
     axs[2, 1].set_title('Median Filter')
 
     fig.suptitle('2d Spatial Data - Histogram, Transfer Functions, Filters')
-    plt.savefig('medical_imaging.jpeg', dpi =200)
+    plt.savefig('medical_imaging.jpeg', dpi=200)
     plt.show()
 
 # ----------------------------------#

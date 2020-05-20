@@ -109,7 +109,7 @@ def visual(data):
     axs[0, 1].hist(data, bins=plot_histogram(data), histtype='step')
     axs[0, 1].set_title('Histogram')
 
-    axs[1, 0].imshow(linear_transform(data), 'gray')
+    axs[1, 0].imshow(linear_transform(data), 'bone')
     axs[1, 0].set_title('Linear Transformation')
 
     axs[1, 1].imshow(nonlinear_transform(data), 'bone')

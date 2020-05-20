@@ -17,9 +17,8 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 
+
 # ---Task Functions--- #
-
-
 # Task A
 def profile_line(data):
     array2d = data.reshape(512, 512)
@@ -43,8 +42,8 @@ def variance1(data):
 
 # Task C
 def plot_histogram(data):
-    plt.hist(data, bins=255)
-    plt.show()
+    bin = np.bincount(data)
+    return len(bin)
 
 
 # Task D
@@ -54,9 +53,9 @@ def linear_transform(data):
     linear_tf = [None]*len(data)
     for x in range(0, len(data)):
         i = data[x]
-        if i_max is None or i_max < i:
+        if i_max < i:
             i_max = i
-        if i_min is None or i_min > i:
+        if i_min > i:
             i_min = i
         linear_tf[x] = ((i - i_min) / (i_max - i_min))*255
     linear_tf = np.asarray(linear_tf)
@@ -67,9 +66,12 @@ def linear_transform(data):
 # Task E
 def nonlinear_transform(data):
     nlinear_tf = [None]*len(data)
+    log_min = math.log(min) if min > 0 else 0
+    log_max = math.log(max) if max > 0 else 0
     for y in range(0, len(data)):
         px = data[y]
         nlinear_tf[y] = math.log2(px + 1)
+        nlinear_tf[y] = ((math.log2 - log_min)/(log_max - log_min))*255
     nlinear_tf = np.asarray(nlinear_tf)
     pixel = nlinear_tf.reshape(512, 512)
     return pixel
@@ -81,9 +83,9 @@ def boxcar_filter(data):
     pad = filter // 2
     data = data.reshape(512, 512)
     row, col = data.shape
-    for x in range(pad, row-pad):
-        for y in range(pad, col-pad):
-            filter_val = np.sum(data[x:filter+x, y:filter+y])*(1/121)
+    for x in range(pad, row - (pad+pad)):
+        for y in range(pad, col - (pad+pad)):
+            filter_val = np.sum(data[x:filter + x, y:filter + y])*(1/121)
             data[x+5, y+5] = filter_val
     return data
 
@@ -94,13 +96,37 @@ def median_filter(data):
     pad = filter // 2
     data = data.reshape(512, 512)
     row, col = data.shape
-    for x in range(pad, row-pad):
-        for y in range(pad, col-pad):
-            filter_val = np.sort(data[x:filter+x, y:filter+y])
-            data[x+5, y+5] = filter_val[pad, pad]
+    for x in range(pad, row - (pad+pad)):
+        for y in range(pad, col - (pad+pad)):
+            filter_val = np.sort(data[x:filter + x, y:filter + y], axis=None)
+            val = filter_val[60]
+            data[x+5, y+5] = val
     return data
 
-# def visual():
+
+def visual(data):
+    fig, axs = plt.subplots(3, 2, figsize=(12, 10), constrained_layout=True)
+    axs[0, 0].plot(profile_line(data))
+    axs[0, 0].set_title('256 Profile Line')
+
+    axs[0, 1].hist(data, bins=plot_histogram(data), histtype='step')
+    axs[0, 1].set_title('Histogram')
+
+    axs[1, 0].imshow(linear_transform(data), 'gray')
+    axs[1, 0].set_title('Linear Transformation')
+
+    axs[1, 1].imshow(nonlinear_transform(data), 'bone')
+    axs[1, 1].set_title('Non-linear Transformation')
+
+    axs[2, 0].imshow(boxcar_filter(data), 'bone')
+    axs[2, 0].set_title('Boxcar Smoothing Filter')
+
+    axs[2, 1].imshow(median_filter(data), 'bone')
+    axs[2, 1].set_title('Median Filter')
+
+    fig.suptitle('2d Spatial Data - Histogram, Transfer Functions, Filters')
+    plt.savefig('medical_imaging.jpeg', dpi =200)
+    plt.show()
 
 # ----------------------------------#
 
@@ -109,13 +135,4 @@ if __name__ == "__main__":
     raw = np.fromfile('slice150.raw', dtype='int16')
     mean1(raw)
     variance1(raw)
-    #profile_line(raw)
-    #plot_histogram(raw)
-    #linear_transform(raw)
-    #print(len(raw))
-    #print(array2d)
-    #nonlinear_transform(raw)
-    #test(raw)
-    #print(np.shape(raw))
-    #boxcar_filter(raw)
-    #median_filter(raw)
+    visual(raw)

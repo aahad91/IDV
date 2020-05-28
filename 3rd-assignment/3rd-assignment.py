@@ -72,31 +72,47 @@ def histo_eq(data):
     for x in range(0, len(data)):
         for y in range(0, len(data)):
             v = data[x][y]
-            for key, value in cdf.items():
-                if v == key:
-                    h_equ[x][y] = value
-    print(h_equ)
-    plt.imshow(h_equ, 'gray')
-    plt.show()
+            if v in cdf.keys():
+                h_equ[x][y] = cdf.get(v)
+    return h_equ
 
 
 # def color_transform():
+def visual(band1, band2, band3, band4):
+    fig, axs = plt.subplots(2, 2, figsize=(10, 10), constrained_layout=True)
+    axs[0, 0].imshow(histo_eq(band1), 'gray')
+    axs[0, 0].set_title('Band1')
+    axs[0, 1].imshow(histo_eq(band2), 'gray')
+    axs[0, 1].set_title('Band2')
+    axs[1, 0].imshow(histo_eq(band3), 'gray')
+    axs[1, 0].set_title('Band3')
+    axs[1, 1].imshow(histo_eq(band4), 'gray')
+    axs[1, 1].set_title('Band4')
+    plt.savefig('space_imaging.jpeg', dpi=200)
+    plt.show()
 # ----------------------------------#
 
 
 if __name__ == "__main__":
 
+    # --- Reading Data--- #
+    raw1 = pd.read_csv('orion/i170b1h0_t0.txt', header=None)
+    df1 = raw1.to_numpy()
+    band1 = np.flip(df1, 0)
     raw2 = pd.read_csv('orion/i170b2h0_t0.txt', header=None)
-    df = raw2.to_numpy()
-    band2 = np.flip(df, 0)
-    print(df)
-    print('\n')
-    # plt.imshow(band2, cmap='gray')
-    # plt.show()
+    df2 = raw2.to_numpy()
+    band2 = np.flip(df2, 0)
+    raw3 = pd.read_csv('orion/i170b3h0_t0.txt', header=None)
+    df3 = raw3.to_numpy()
+    band3 = np.flip(df3, 0)
+    raw4 = pd.read_csv('orion/i170b4h0_t0.txt', header=None)
+    df4 = raw4.to_numpy()
+    band4 = np.flip(df4, 0)
+
     print("Max Value:", max_val(band2))
     print("Min Value:", min_val(band2))
     print("Mean:", mean_val(band2))
     print("Variance:", var_val(band2))
-    # prof_line_max(band2)
-    # rescale_val(band2)
-    histo_eq2(band2)
+
+    # ---Plotting Histogram Equalization--- #
+    visual(band1, band2, band3, band4)

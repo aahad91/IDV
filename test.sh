@@ -10,3 +10,5 @@ cd
 cd 2nd-assignment/
 python 2nd-assignment.py
 cd
+cd 3rd-assignment/
+python 3rd-assignment.py

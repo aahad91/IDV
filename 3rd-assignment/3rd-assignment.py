@@ -32,19 +32,27 @@ def prof_line_max(data):
     for i in range(0, 500):
         prof_line.append(data[pline[0], i])
     return prof_line
-# def histo_line(data):
 
+
+def histo_line(data):
+    hist = {}
+    for x in range(0, len(data)):
+        for y in range(0, len(data)):
+            i = data[x][y]
+            if i in hist:
+                hist[i] += 1
+            else:
+                hist[i] = 1
+    return hist
 
 def rescale_val(data):
-    # i_max = max_val(data)
-    # i_min = min_val(data)
+    i_max = max_val(data)
+    i_min = min_val(data)
     tf = np.zeros([len(data), len(data)])
     for x in range(0, len(data)):
         for y in range(0, len(data)):
             i = data[x][y]
-            tf[x][y] = math.log2(i + 1)
-            # tf[x][y] = (((i - i_min) / (i_max - i_min))*255)
-    print(np.shape(tf))
+            tf[x][y] = (((i - i_min) / (i_max - i_min))*255)
     return tf
 
 
@@ -88,13 +96,14 @@ def color_transform(r, g, b):
 
 
 def visual(band1, band2, band3, band4):
-    fig, axs = plt.subplots(2, 4, figsize=(15, 10), constrained_layout=True)
+    fig, axs = plt.subplots(2, 4, figsize=(18, 8), constrained_layout=True)
     axs[0, 0].plot(prof_line_max(band2))
     axs[0, 0].set_title('Profile Line')
-    axs[0, 1].plot(prof_line_max(band2))
+    axs[0, 1].plot(list(histo_line(band2).keys()), list(histo_line(band2).values()))
     axs[0, 1].set_title('Histogram')
-    axs[0, 2].imshow(rescale_val(band2), 'gray')
-    axs[0, 2].set_title('Rescaling Non-Linear Transform')
+    axss = axs[0, 2].imshow(rescale_val(band2), 'gray')
+    axs[0, 2].set_title('Rescaling(Max/Min Legends) - Linear Transform')
+    fig.colorbar(axss, ax=axs[0, 2], ticks=[np.min(rescale_val(band2)), np.max(rescale_val(band2))])
     axs[0, 3].imshow(histo_eq(band1, max_val(band1)), 'gray')
     axs[0, 3].set_title('Band1')
     axs[1, 0].imshow(histo_eq(band2, max_val(band2)), 'gray')
@@ -134,3 +143,4 @@ if __name__ == "__main__":
 
     # ---Plotting --- #
     visual(band1, band2, band3, band4)
+    #histo_line(band2)

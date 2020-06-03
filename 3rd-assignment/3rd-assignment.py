@@ -35,15 +35,10 @@ def prof_line_max(data):
 
 
 def histo_line(data):
-    hist = {}
-    for x in range(0, len(data)):
-        for y in range(0, len(data)):
-            i = data[x][y]
-            if i in hist:
-                hist[i] += 1
-            else:
-                hist[i] = 1
+    pixel, count = np.unique(data, return_counts=True)
+    hist = dict(zip(pixel, count))
     return hist
+
 
 def rescale_val(data):
     i_max = max_val(data)
@@ -58,17 +53,10 @@ def rescale_val(data):
 
 def histo_eq(data, rscale):
     maxval = rscale
-    val = {}
+    val = histo_line(data)
     cdf = {}
     sum = 0
     h_equ = np.zeros([len(data), len(data)])
-    for x in range(0, len(data)):
-        for y in range(0, len(data)):
-            i = data[x][y]
-            if i in val:
-                val[i] += 1
-            else:
-                val[i] = 1
     for q, p in sorted(val.items()):
         pr = p/(500*500)
         sum += pr
@@ -99,19 +87,19 @@ def visual(band1, band2, band3, band4):
     fig, axs = plt.subplots(2, 4, figsize=(18, 8), constrained_layout=True)
     axs[0, 0].plot(prof_line_max(band2))
     axs[0, 0].set_title('Profile Line')
-    axs[0, 1].plot(list(histo_line(band2).keys()), list(histo_line(band2).values()))
-    axs[0, 1].set_title('Histogram')
+    axs[0, 1].plot(list(histo_line(band2).values()))
+    axs[0, 1].set_title('Histogram-Band2')
     axss = axs[0, 2].imshow(rescale_val(band2), 'gray')
-    axs[0, 2].set_title('Rescaling(Max/Min Legends) - Linear Transform')
+    axs[0, 2].set_title('Rescaling(Max/Min) - Linear Transform')
     fig.colorbar(axss, ax=axs[0, 2], ticks=[np.min(rescale_val(band2)), np.max(rescale_val(band2))])
     axs[0, 3].imshow(histo_eq(band1, max_val(band1)), 'gray')
-    axs[0, 3].set_title('Band1')
+    axs[0, 3].set_title('Histogram Equalization-Band1')
     axs[1, 0].imshow(histo_eq(band2, max_val(band2)), 'gray')
-    axs[1, 0].set_title('Band2')
+    axs[1, 0].set_title('Histogram Equalization-Band2')
     axs[1, 1].imshow(histo_eq(band3, max_val(band3)), 'gray')
-    axs[1, 1].set_title('Band3')
+    axs[1, 1].set_title('Histogram Equalization-Band3')
     axs[1, 2].imshow(histo_eq(band4, max_val(band4)), 'gray')
-    axs[1, 2].set_title('Band4')
+    axs[1, 2].set_title('Histogram Equalization-Band4')
     axs[1, 3].imshow(color_transform(band4, band3, band1))
     axs[1, 3].set_title('Color Transformation')
     fig.suptitle('Space Imaging')
@@ -143,4 +131,3 @@ if __name__ == "__main__":
 
     # ---Plotting --- #
     visual(band1, band2, band3, band4)
-    #histo_line(band2)

@@ -6,6 +6,7 @@ Name: Abdul Ahad Ayaz
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib import cm
 import pandas.plotting as pp
 import seaborn as sns
 # ---Task Functions--- #
@@ -16,8 +17,11 @@ import seaborn as sns
 if __name__ == "__main__":
     # --- Reading Data--- #
     data = pd.read_csv('DataWeierstrass.csv', delimiter=';')
-    data1 = data.iloc[:, 2:]
-    print(data1.head())
-    pp.scatter_matrix(data1, diagonal='kde')
-    #sns.pairplot(data1, kind='scatter')
+    # ---Scatter Matrix--- #
+    sm = sns.pairplot(data, hue='professor', kind='scatter', diag_kind='None', height=2, aspect=2, markers='+')
+    for ax in sm.axes.flat:
+        plt.setp(ax.get_xticklabels(), rotation=0)
+
+    # ---Parallel Cooedinates--- #
+
     plt.show()

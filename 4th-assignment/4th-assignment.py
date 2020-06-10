@@ -22,8 +22,8 @@ def scatter_matrix(data):
 
 
 def parallel_coordinate(data):
-    u, data['professor1'] = np.unique(data['professor'], return_inverse=True)
-    v, data['lecture1'] = np.unique(data['lecture'], return_inverse=True)
+    row_val1, data['professor1'] = np.unique(data['professor'], return_inverse=True)
+    row_val2, data['lecture1'] = np.unique(data['lecture'], return_inverse=True)
     data1 = data.drop(['professor', 'lecture'], axis=1)
     for i in data1.index:
         data1.at[i, 'professor1'] += 1

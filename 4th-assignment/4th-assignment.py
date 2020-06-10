@@ -8,7 +8,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
-
+from plotly.offline import plot
 
 
 # --- Task Functions--- #
@@ -34,6 +34,7 @@ def parallel_coordinate(data):
                                         labels={'professor1': 'professor', 'lecture1': 'lecture'},
                                         color_continuous_scale=px.colors.cyclical.mrybm,
                                         title='Best Teacher Visualization: Parallel Coordinates')
+    plot(pc, filename='parallel_coordinate.html')
     return pc
 
 

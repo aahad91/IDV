@@ -4,3 +4,6 @@
 ![Scatter Matrix](scatter_matrix.jpeg)
 #### Parallel Coordinates:
 ![Parallel Coordinates](parallel_coordinate.png)
+
+------
+

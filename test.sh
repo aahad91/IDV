@@ -13,3 +13,6 @@ cd
 cd 3rd-assignment/
 python 3rd-assignment.py
 cd
+cd 4th-assignment/
+python 4th-assignment
+cd
